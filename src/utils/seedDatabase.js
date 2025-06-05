@@ -67,6 +67,7 @@ export const seedDatabase = async () => {
       teamSize: 3,
       status: "active",
       managerId: manager1._id,
+      engineerId: [engineers[0]._id],
     });
 
     // Create assignments

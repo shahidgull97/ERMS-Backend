@@ -3,6 +3,9 @@ import Assignment from "../models/assignment.js";
 
 export const createProject = async (req, res) => {
   try {
+    // console.log(`Creating project with data: ${JSON.stringify(req.body)}`);
+    // console.log("does it reach here?");
+
     const project = new Project({
       ...req.body,
       managerId: req.user.userId,
@@ -20,6 +23,27 @@ export const getProjects = async (req, res) => {
     const projects = await Project.find()
       .populate("managerId", "name email")
       .sort("-createdAt");
+
+    res.json(projects);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export const getProjectsByUser = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    // console.log(`Fetching projects for user ID: ${userId}`);
+
+    const projects = await Project.find({ engineerId: userId })
+      .populate("managerId", "name email")
+      .sort("-createdAt");
+
+    if (projects.length === 0) {
+      return res
+        .status(200)
+        .json({ message: "No projects found for this user", projects: [] });
+    }
 
     res.json(projects);
   } catch (error) {
@@ -51,10 +75,20 @@ export const getProjectById = async (req, res) => {
 
 export const updateProject = async (req, res) => {
   try {
-    const project = await Project.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    console.log(
+      `Updating project with ID: ${req.params.id} and data: ${JSON.stringify(
+        req.body
+      )}`
+    );
+
+    const project = await Project.findByIdAndUpdate(
+      req.params.id,
+      { $addToSet: { engineerId: req.body.engineerId } },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
 
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
