@@ -74,10 +74,3 @@ export const register = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
-export const isLoggedIn = async (req, res, next) => {
-  try {
-    res.status(200).json({ success: true, msg: "User is Logged in" });
-  } catch (error) {
-    return next(new ErrorHandler(400, err));
-  }
-};
