@@ -45,6 +45,11 @@ export const getProjectsByUser = async (req, res) => {
 
     res.json(projects);
   } catch (error) {
+    console.log(
+      `Error fetching projects for user ID ${req.user.userId}:`,
+      error
+    );
+
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
