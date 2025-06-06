@@ -40,9 +40,7 @@ export const getProjectsByUser = async (req, res) => {
       .sort("-createdAt");
 
     if (projects.length === 0) {
-      return res
-        .status(200)
-        .json({ message: "No projects found for this user", projects: [] });
+      return res.status(200).json([]);
     }
 
     res.json(projects);

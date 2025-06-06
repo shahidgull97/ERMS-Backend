@@ -28,6 +28,10 @@ export const login = async (req, res) => {
         email: user.email,
         name: user.name,
         role: user.role,
+        skills: user.skills,
+        department: user.department,
+        currentCapacity: user.currentCapacity,
+        maxCapacity: user.maxCapacity,
       },
     });
   } catch (error) {
@@ -68,6 +72,10 @@ export const register = async (req, res) => {
         email: user.email,
         name: user.name,
         role: user.role,
+        skills: user.skills,
+        department: user.department,
+        currentCapacity: user.currentCapacity,
+        maxCapacity: user.maxCapacity,
       },
     });
   } catch (error) {
